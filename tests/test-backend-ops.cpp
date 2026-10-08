@@ -1364,6 +1364,29 @@ struct test_case {
         }
         const auto op_name = op_desc(op);
         const auto op_full_name = op_name + "(" + vars() + ")";
+        // local, never upstream: "<OP>_S<k>" (k 0..9) selects every tenth case of <OP> in construction order;
+        // the ten slices partition <OP> exactly. "<OP>_X<dd>" (dd 00..39) selects every 40th case.
+        {
+            std::string_view f(op_names_filter);
+            if (f.size() > 3 && f.substr(f.size() - 3, 2) == "_S" && f.back() >= '0' && f.back() <= '9') {
+                const int  k    = f.back() - '0';
+                const auto base = std::string(f.substr(0, f.size() - 3));
+                if (op_name != base) {
+                    return false;
+                }
+                static std::unordered_map<std::string, int> seen;
+                return (seen[base]++ % 10) == k;
+            }
+            if (f.size() > 4 && f.substr(f.size() - 4, 2) == "_X" && isdigit((unsigned char) f[f.size() - 2]) && isdigit((unsigned char) f.back())) {
+                const int  k    = (f[f.size() - 2] - '0') * 10 + (f.back() - '0');
+                const auto base = std::string(f.substr(0, f.size() - 4));
+                if (op_name != base) {
+                    return false;
+                }
+                static std::unordered_map<std::string, int> seen40;
+                return (seen40[base]++ % 40) == k;
+            }
+        }
         for (const auto & entry : op_filter_entries(op_names_filter)) {
             if (entry.find_first_of('(') != std::string_view::npos) {
                 // a full test case string, matched exactly

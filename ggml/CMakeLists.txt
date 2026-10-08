@@ -233,6 +233,7 @@ option(GGML_WEBGPU_DEBUG                    "ggml: enable WebGPU debug output"  
 option(GGML_WEBGPU_CPU_PROFILE              "ggml: enable WebGPU profiling (CPU)"             OFF)
 option(GGML_WEBGPU_GPU_PROFILE              "ggml: enable WebGPU profiling (GPU)"             OFF)
 option(GGML_WEBGPU_JSPI                     "ggml: use JSPI for WebGPU"                       ON)
+option(GGML_D3D9                           "ggml: use Direct3D 9 (mat-mul accelerator)"      OFF)
 option(GGML_ZDNN                            "ggml: use zDNN"                                  OFF)
 option(GGML_VIRTGPU                         "ggml: use the VirtGPU/Virglrenderer API Remoting frontend"     OFF)
 option(GGML_VIRTGPU_BACKEND                 "ggml: build the VirtGPU/Virglrenderer API Remoting backend"    OFF)
@@ -340,6 +341,7 @@ set(GGML_PUBLIC_HEADERS
     include/ggml-sycl.h
     include/ggml-vulkan.h
     include/ggml-webgpu.h
+    include/ggml-d3d9.h
     include/ggml-zendnn.h
     include/ggml-openvino.h
     include/gguf.h)
