@@ -692,7 +692,12 @@ static bool ggml_d3d9_mul_mat_id(ggml_d3d9_context * ctx, ggml_tensor * dst) {
     for (int64_t t = 0; t < n_tok; t++) {
         for (int64_t i = 0; i < n_ids; i++) {
             const int32_t e = *(const int32_t *) ((const char *) ids->data + (size_t) t * ids->nb[1] + (size_t) i * ids->nb[0]);
-            if (e < 0 || e >= n_as) {
+            if (e < 0) {
+                // id -1 = skipped slot (upstream #26631): its dst row is zero, as in the CPU backend
+                memset((char *) dst->data + (size_t) i * dst->nb[1] + (size_t) t * dst->nb[2], 0, (size_t) dst->ne[0] * 4);
+                continue;
+            }
+            if (e >= n_as) {
                 GGML_LOG_ERROR("%s: expert id %d out of range (%d experts)\n", __func__, (int) e, (int) n_as);
                 return false;
             }
