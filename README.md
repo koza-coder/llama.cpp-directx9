@@ -1,3 +1,18 @@
+# llama.cpp - DirectX 9 (D3D9) backend
+
+> **This is a fork of [llama.cpp](https://github.com/ggml-org/llama.cpp) with an experimental Direct3D 9 backend.**
+> Matrix products (MUL_MAT, and MUL_MAT_ID for mixture-of-experts models) run on the GPU through ps_3_0 pixel shaders;
+> everything else stays on the CPU. Use `-ngl 0`. It needs a logged-in desktop session (not a service).
+>
+> - **Download:** Windows x64 zips on the [releases page](https://github.com/koza-coder/llama.cpp-directx9/releases)
+> - **Tested** (v0.0.3 zip, AMD Radeon AI PRO R9700, Qwen2.5-0.5B Q4_0, `-ngl 0`): llama-bench prompt processing pp32 125 tok/s, token generation tg16 11.3 tok/s; test-backend-ops MUL_MAT_ID 8/8 and MUL_MAT 41/41 test cases passed
+> - **Backend source:** [ggml/src/ggml-d3d9](ggml/src/ggml-d3d9)
+> - **Other versions:** [DirectX 12](https://github.com/koza-coder/llama.cpp-directx12) (first choice on current GPUs,
+>   faster generation), [DirectX 11](https://github.com/koza-coder/llama.cpp-directx11) for older GPUs and drivers,
+>   [OpenGL](https://github.com/koza-coder/llama.cpp-opengl) - same llama.cpp, only the GPU backend differs
+>
+> Everything below is the upstream llama.cpp README.
+
 # llama.cpp
 
 ![llama](https://raw.githubusercontent.com/ggml-org/llama.brand/refs/heads/master/cover/llama-cpp/cover-llama-cpp-dark.svg)
